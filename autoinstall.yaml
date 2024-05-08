@@ -10,9 +10,8 @@ autoinstall:
         hostname: lnx
         username: ladmin
         password: '$6$iZc7oeKPF28Rc91g$rEdq1f8UUekGUX.fOXN/CV2K8lyaluxnWQfdVR95UGe41l1Y0YC4XV4Hnrm1mvoByAY4gXnKQ5RoPWwnImEKz/'
-    ssh:
-        install-server: yes
     packages:
+        - ssh
         - libreoffice
         - clevis
         - clevis-tpm2
@@ -20,4 +19,4 @@ autoinstall:
         - clevis-initramfs
         - clevis-systemd
     late-commands:
-        - sudo clevis luks bind -d /dev/nvme0n1p3 tpm2 '{"pcr_ids":"0,1,4,5,7"}'
+        - sudo apt install -y clevis clevis-tpm2 clevis-luks clevis-initramfs clevis-systemd ssh
