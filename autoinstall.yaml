@@ -10,6 +10,17 @@ autoinstall:
         hostname: lnx
         username: ladmin
         password: '$6$iZc7oeKPF28Rc91g$rEdq1f8UUekGUX.fOXN/CV2K8lyaluxnWQfdVR95UGe41l1Y0YC4XV4Hnrm1mvoByAY4gXnKQ5RoPWwnImEKz/'
+    apt:
+        preserve_sources_list: false
+        mirror-selection:
+          primary:
+            - country-mirror
+            - arches: [i386, amd64]
+              uri: "http://archive.ubuntu.com/ubuntu"
+            - arches: [s390x, arm64, armhf, powerpc, ppc64el, riscv64]
+              uri: "http://ports.ubuntu.com/ubuntu-ports"
+        fallback: abort
+        geoip: true
     packages:
         - ssh
         - libreoffice
