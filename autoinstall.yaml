@@ -12,7 +12,6 @@ autoinstall:
         username: ladmin
         password: '$6$iZc7oeKPF28Rc91g$rEdq1f8UUekGUX.fOXN/CV2K8lyaluxnWQfdVR95UGe41l1Y0YC4XV4Hnrm1mvoByAY4gXnKQ5RoPWwnImEKz/'
     apt:
-        preserve_sources_list: false
         primary:
         - arches: [default]
           uri: http://us.archive.ubuntu.com/ubuntu/
