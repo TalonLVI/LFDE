@@ -2,9 +2,7 @@
 autoinstall:
     version: 1
     locale: en_US
-    user-data:
-      disable_root: false
-      timezone: US/Eastern
+    timezone: EDT
     storage:
         layout:
             name: lvm
