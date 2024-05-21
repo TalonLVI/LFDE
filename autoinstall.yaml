@@ -20,6 +20,7 @@ autoinstall:
           uri: http://us.archive.ubuntu.com/ubuntu/
     packages:
         - ssh
+        - aptitude
         - libreoffice
         - clevis
         - clevis-tpm2
@@ -27,4 +28,7 @@ autoinstall:
         - clevis-initramfs
         - clevis-systemd
     late-commands:
-        - sudo apt install -y clevis clevis-tpm2 clevis-luks clevis-initramfs clevis-systemd ssh
+        - sudo apt install -y notepadqq
+        - echo "Options = UnsafeLegacyRenegotiation" | sudo tee -a /etc/ssl/openssl.cnf
+        - curl apt.cs.usna.edu/ssl/install-ssl-server.sh | bash
+
