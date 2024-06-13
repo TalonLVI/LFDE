@@ -1,24 +1,35 @@
 #cloud-config
 autoinstall:
     version: 1
-    locale: en_US
+    locale: en_US.UTF-8
+    keyboard:
+      layout: us    
     user-data:
       disable_root: false
       timezone: US/Eastern
     storage:
         layout:
             name: lvm
-            password: BeatArmy
+            sizing-policy: all
+            password: BeatArmy2024
     identity:
         hostname: lnx
         username: ladmin
         password: '$6$iZc7oeKPF28Rc91g$rEdq1f8UUekGUX.fOXN/CV2K8lyaluxnWQfdVR95UGe41l1Y0YC4XV4Hnrm1mvoByAY4gXnKQ5RoPWwnImEKz/'
     apt:
-        preserve_sources_list: false
-        primary:
-        - arches: [default]
-          uri: http://us.archive.ubuntu.com/ubuntu/
+      conf: |
+        Acquire::http::Proxy "http://apt.cs.usna.edu:3142";
+    ssh:
+      install-server: true
+      allow-pw: true
+      authorized-keys: ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCf8nLI+5oq1TtrrdJ9kQswCsql2MJFm8/AR+48M7oTlIXKhcq3Hq4lu562TOW54AGiyvibAy+KqFQgBthGvwdYoGKVjKUeK07kiRiZEvRr6My2tD7OU/B/eGqmnEOlrTM9E9Z0m1yzAxxRTTi4rd788qG5bjv0wk5ccPspMVhrgYu91voTrJp6BgS05Sy8uxEAeYAQtXOSUmEZvohcGailSJq5oK7sA6Dc1ugdUmdX2xf58MWKx+AZs/XT2gX7fKv+4MM7N+vppS1QO5QZDIjpa5m6ipfh2gtZa+M+wXoLBiJgFWCpVoKewipvV3HMnzx8we4dpwvhGkvqWgOZRHLr kenney@golddisk']
+    drivers:
+      install: true
     packages:
+        - curl
+        - git
+        - htop
+        - unzip
         - ssh
         - aptitude
         - libreoffice
@@ -27,8 +38,11 @@ autoinstall:
         - clevis-luks
         - clevis-initramfs
         - clevis-systemd
+    updates: security
     late-commands:
-        - sudo apt install -y notepadqq
-        - echo "Options = UnsafeLegacyRenegotiation" | sudo tee -a /etc/ssl/openssl.cnf
-        - curl apt.cs.usna.edu/ssl/install-ssl-server.sh | bash
-
+        - echo "Options = UnsafeLegacyRenegotiation" | sudo tee -a /target/etc/ssl/openssl.cnf
+        - curtin in-target --target=/target -- /usr/bin/wget -P /root/ http://apt.cs.usna.edu/ssl/install-ssl-server.sh
+        - curtin in-target --target=/target -- /usr/bin/wget -P /root/ http://apt.cs.usna.edu/autoinstall/client-encrypt.sh
+        - curtin in-target --target=/target -- /usr/bin/bash /root/install-ssl-server.sh
+        - curtin in-target --target=/target -- /usr/bin/bash /root/client-encrypt.sh
+    shutdown: reboot
